@@ -1,3 +1,6 @@
 [submodule "submodules/common_cells"]
 	path = submodules/common_cells
 	url = https://github.com/pulp-platform/common_cells.git
+[submodule "submodules/SystemVerilog"]
+	path = submodules/SystemVerilog
+	url = https://github.com/squared-studio/SystemVerilog.git
