@@ -39,4 +39,7 @@
 <img src="docs/diagrams/top.svg">
 
 ## Expected Operation Waveform (optimistic)
-<img src="docs/diagrams/wavefrom.svg">
+<img src="docs/diagrams/wavefrom_pipelined.svg">
+
+## Non-pipelined output for understanding purpose
+<img src="docs/diagrams/wavefrom_non_pipelined.svg">
