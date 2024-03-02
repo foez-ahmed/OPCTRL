@@ -1,0 +1,21 @@
+{
+  signal: [
+    {name: 'clk_i            ', wave: 'P..|.|................'},
+    {name: 'arst_ni          ', wave: 'x.0|1|................'},
+    {name: 'uinstr_i         ', wave: 'x..|.|89....8....9....'},
+    {name: 'uinstr_valid_i   ', wave: 'x.0|.|1...............'},
+    {name: 'uinstr_ready_o   ', wave: 'x.1|.|.0...10...10...1'},
+    {name: 'rd_addr_o        ', wave: 'x..|.|.3456.3456.3456.'},
+    {name: 'rd_addr_valid_o  ', wave: 'x.0|.|.1...01...01...0'},
+    {name: 'rd_addr_ready_i  ', wave: 'x.1|.|................'},
+    {name: 'rd_data_i        ', wave: 'x..|.|..3456.3456.3456'},
+    {name: 'rd_data_valid_i  ', wave: 'x.0|.|..1...01...01...'},
+    {name: 'operand_a_o      ', wave: 'x..|.|...3....3....3..'},
+    {name: 'operand_b_o      ', wave: 'x..|.|....4....4....4.'},
+    {name: 'operand_c_o      ', wave: 'x..|.|..2222.2222.2222'},
+    {name: 'op_code_o        ', wave: 'x..|.|.8....9....8....'},
+    {name: 'operation_valid_o', wave: 'x.0|.|.....10...10...1'},
+    ]
+  }
+  
+  
