@@ -21,7 +21,7 @@
 |-------------------|-----------|----------|-------------------------------|
 | clk_i             | input     | logic    | sync clock                    |
 | arst_ni           | input     | logic    | asynchronous active low reset |
-| uinstr_i          | input     | logic    | mircro instruction            |
+| uinstr_i          | input     | uinstr_t | mircro instruction            |
 | uinstr_valid_i    | input     | logic    | mircro instruction valid      |
 | uinstr_ready_o    | output    | logic    | mircro instruction ready      |
 | rd_addr_o         | output    | addr_t   | read request address          |
