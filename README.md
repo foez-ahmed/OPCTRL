@@ -43,3 +43,4 @@
 
 ## Non-pipelined output for understanding purpose
 <img src="docs/diagrams/wavefrom_non_pipelined.svg">
+
