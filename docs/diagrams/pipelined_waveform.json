@@ -2,7 +2,7 @@
   signal: [
     {name: 'clk_i            ', wave: 'P..|.|.............'},
     {name: 'arst_ni          ', wave: 'x.0|1|.............'},
-    {name: 'uinstr_i         ', wave: 'x..|.|89..8...9...8'},
+    {name: 'uinstr_i         ', wave: 'x..|.|89...8...9...'},
     {name: 'uinstr_valid_i   ', wave: 'x.0|.|1............'},
     {name: 'uinstr_ready_o   ', wave: 'x.1|.|.0..10..10..1'},
     {name: 'rd_addr_o        ', wave: 'x..|.|.345634563456'},
