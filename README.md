@@ -3,9 +3,9 @@
 ## Parameters
 | Parameter | Type | Default Value | Description             |
 |-----------|------|---------------|-------------------------|
-| AW        | int  | 5             | Address bus width       |
-| DW        | int  | 2048          | Data bus width          |
-| CW        | int  | 8             | Operation Code width    |
+| AW        | int  | 4             | Address bus width       |
+| DW        | int  | 20            | Data bus width          |
+| CW        | int  | 4             | Operation Code width    |
 
 ## Type definations
 | Type     | Definition         | Description        |
