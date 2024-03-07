@@ -1,0 +1,8 @@
+0.7
+2020.2
+Oct 13 2023
+20:21:30
+/home/dsi/Desktop/project/CRG_20240212-1/include/clocking.svh,1709285448,verilog,,,,,,,,,,,,
+/home/dsi/Desktop/project/CRG_20240212-1/include/tb_ess.svh,1709098290,verilog,,,,,,,,,,,,
+/home/dsi/Desktop/project/CRG_20240212-1/tb/address_fsm_tb/address_fsm.sv,1709753095,systemVerilog,,/home/dsi/Desktop/project/CRG_20240212-1/tb/address_fsm_tb/address_fsm_tb.sv,,address_fsm,,,../../include,,,,,
+/home/dsi/Desktop/project/CRG_20240212-1/tb/address_fsm_tb/address_fsm_tb.sv,1709752796,systemVerilog,,,/home/dsi/Desktop/project/CRG_20240212-1/include/clocking.svh;/home/dsi/Desktop/project/CRG_20240212-1/include/tb_ess.svh,address_fsm_tb,,,../../include,,,,,
