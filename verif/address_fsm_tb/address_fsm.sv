@@ -7,16 +7,22 @@
 //`include "axi4_assign.svh"
 //`include "axi4_typedef.svh"
 //`include "default_param_pkg.sv"
+import config_pkg::uinstr_t;
+import config_pkg::addr_t;
+import config_pkg::code_t;
 
-module addr_fsm (
+module addr_fsm(
     input logic clk_i,
     input logic arst_ni,
     input logic uinstr_valid_i,
     input logic rd_addr_ready_i,
     input uinstr_t uinstr_i,
+    input logic fifo_opcode_ready_o,
     output logic uinstr_ready_o,
     output logic rd_addr_valid_o,
-    output addr_t rd_addr_o
+    output addr_t rd_addr_o,
+    output code_t fifo_data_in,
+    output logic fifo_opcode_valid_in
   );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,6 +98,8 @@ module addr_fsm (
     rd_addr_o=0;
     rd_addr_valid_o=0;
     uinstr_ready_o = 1;
+    fifo_data_in = 0;
+    fifo_opcode_valid_in=0;
 
     case (currentstate)
       vrs1:
@@ -140,6 +148,10 @@ module addr_fsm (
           rd_addr_valid_o = 0;
           uinstr_ready_o = 1;
           nextstate = vrs1;
+          if(fifo_opcode_ready_o) begin
+          fifo_data_in = uinstr_i.opcode;
+          fifo_opcode_valid_in=1;
+          end           
         end
         else
         begin
