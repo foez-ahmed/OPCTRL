@@ -1,12 +1,7 @@
 // Description
 // ### Author : Md NAzmus Sakib (email)
 
-//`include "addr_map.svh"
-//`include "axi4l_assign.svh"
-//`include "axi4l_typedef.svh"
-//`include "axi4_assign.svh"
-//`include "axi4_typedef.svh"
-//`include "default_param_pkg.sv"
+
 `include "config_pkg.sv"
   import config_pkg::uinstr_t;
   import config_pkg::addr_t;
@@ -55,7 +50,7 @@
 
   logic fifo_opcode_valid_i;
   logic fifo_opcode_ready_o;
-  logic fifo_opcode_valid_o;
+  code_t fifo_data_in;
   logic fifo_val;
   //}}}
 
@@ -89,7 +84,7 @@
              .fifo_data_in(fifo_data_in),
              .fifo_opcode_valid_in(fifo_opcode_valid_in)
            );
-
+/*
   fifo #(
          .PIPELINED(0),
          .ELEM_WIDTH($bits(operation_code_o)),
@@ -104,9 +99,9 @@
          .elem_out_valid_o(fifo_val),
          .elem_out_ready_i(operation_valid_o)
        );
-
+*/
   receive_fsm receive_fsm_inst (
-                .clk(clk),
+                .clk(clk_i),
                 .arst_ni(arst_ni),
                 .rd_data_valid_i(rd_data_valid_i),
                 .rd_data_i(rd_data_i),

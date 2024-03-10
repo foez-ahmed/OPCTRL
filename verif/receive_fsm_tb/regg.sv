@@ -1,8 +1,11 @@
+`include "config_pkg.sv"
+import config_pkg::data_t;
+import config_pkg::w_data_t;
 module regg (
     input logic clk,
     input logic enable,   
-    input logic data_in, 
-    output logic data_out 
+    input data_t data_in, 
+    output data_t data_out 
 );
 
 always_ff @(posedge clk) begin
@@ -11,4 +14,5 @@ always_ff @(posedge clk) begin
     end else begin
       data_out <= data_out;
     end
+  end
 endmodule

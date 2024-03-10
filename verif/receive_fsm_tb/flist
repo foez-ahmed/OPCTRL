@@ -1,2 +1,3 @@
 receive_fsm.sv
-
+receive_fsm_tb.sv
+regg.sv

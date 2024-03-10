@@ -109,6 +109,7 @@ module addr_fsm(
           rd_addr_o = uinstr_i.vrs1;
           rd_addr_valid_o =1;
           uinstr_ready_o =0;
+          fifo_opcode_valid_in=0;
           nextstate = vrs2;
         end
         else

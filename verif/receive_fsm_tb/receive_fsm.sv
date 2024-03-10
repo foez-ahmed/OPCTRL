@@ -95,28 +95,31 @@ module receive_fsm(
 
   always_comb
   begin
-    operand_a_o = 0;
-    operand_b_o = 0;
-    operand_c_o = 0;
     operation_valid_o =0;
+    reg_a = reg_a;
+    reg_b = reg_b;
+    reg_c = reg_c;
     case (currentstate)
       oper_a:
       begin
+        operand_a_o = reg_a;
+        operand_b_o = reg_b;
+        operand_c_o = {reg_c, rd_data_i};
+        operation_valid_o =1;
         if (rd_data_valid_i)
         begin
-          reg_a = rd_data_i;
-          operation_valid_o =0;
           nextstate = oper_b;
         end
         else
+
           nextstate = oper_a;
       end
 
       oper_b:
       begin
+        reg_a = rd_data_i;
         if (rd_data_valid_i)
         begin
-          reg_b = rd_data_i;
           nextstate = oper_c;
         end
         else
@@ -125,9 +128,9 @@ module receive_fsm(
 
       oper_c:
       begin
+        reg_b = rd_data_i;
         if (rd_data_valid_i)
         begin
-          reg_c = rd_data_i;
           nextstate = oper_c_2;
         end
         else
@@ -136,12 +139,9 @@ module receive_fsm(
 
       oper_c_2:
       begin
+        reg_c = rd_data_i;
         if (rd_data_valid_i)
         begin
-          operand_a_o = reg_a;
-          operand_b_o = reg_b;
-          operand_c_o = {reg_c, rd_data_i};
-          operation_valid_o =1;
           nextstate = oper_a;
         end
         else

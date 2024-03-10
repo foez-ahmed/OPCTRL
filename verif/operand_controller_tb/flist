@@ -1,1 +1,5 @@
 operand_controller.sv
+operand_controller_tb.sv
+../address_fsm_tb/address_fsm.sv
+../receive_fsm_tb/receive_fsm.sv
+

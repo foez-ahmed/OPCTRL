@@ -1,7 +1,7 @@
 package config_pkg;
 
-  parameter int AW = 5;  // Address Width
-  parameter int DW = 2048;  // Data Width
+  parameter int AW = 4;  // Address Width
+  parameter int DW = 20;  // Data Width
   parameter int CW = 4;  // Operation Code Width
 
   typedef logic [AW-1:0] addr_t; // Address Type
