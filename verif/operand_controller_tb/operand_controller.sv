@@ -84,7 +84,7 @@
              .fifo_data_in(fifo_data_in),
              .fifo_opcode_valid_in(fifo_opcode_valid_in)
            );
-/*
+
   fifo #(
          .PIPELINED(0),
          .ELEM_WIDTH($bits(operation_code_o)),
@@ -99,7 +99,7 @@
          .elem_out_valid_o(fifo_val),
          .elem_out_ready_i(operation_valid_o)
        );
-*/
+
   receive_fsm receive_fsm_inst (
                 .clk(clk_i),
                 .arst_ni(arst_ni),

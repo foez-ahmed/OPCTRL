@@ -26,50 +26,50 @@ module receive_fsm_tb;
   );
 
   // Clock generation
-  always #5 clk = ~clk;
+  always #5 clk <= ~clk;
 
   // Reset generation
   initial begin
-    arst_ni = 1'b0;
-    #20 arst_ni = 1'b1;
+    arst_ni <= 1'b0;
+    #20 arst_ni <= 1'b1;
   end
 
   // Stimulus process
   initial begin
     // Initialize inputs
-    clk = 1'b0;
-    rd_data_valid_i = 1'b0;
-    rd_data_i = 20'h0;
+    clk <= 1'b0;
+    rd_data_valid_i <= 1'b0;
+    rd_data_i <= 20'h0;
 
     // Wait for some time for reset to complete
     #35;
 
     // Test sequence
     // Test Case 1: Operand A
-    rd_data_valid_i = 1'b1;
-    rd_data_i = 20'hABCDE;
+    rd_data_valid_i <= 1'b1;
+    rd_data_i <= 20'hABCDE;
     #10;
-    rd_data_i = 20'hDEADF;
+    rd_data_i <= 20'hDEADF;
     #10;
-    rd_data_i = 20'hCAFEA;
+    rd_data_i <= 20'hCAFEA;
     #10;
-    rd_data_i = 20'hFADED;
+    rd_data_i <= 20'hFADED;
     #10;
-    rd_data_i = 20'hCBBDE;
+    rd_data_i <= 20'hCBBDE;
     #10;
-    rd_data_i = 20'hFBAAE;
+    rd_data_i <= 20'hFBAAE;
     #10;
-    rd_data_i = 20'hDEADF;
+    rd_data_i <= 20'hDEADF;
     #10;
-    rd_data_i = 20'hCAFEA;
+    rd_data_i <= 20'hCAFEA;
     #10;
-    rd_data_i = 20'hFADED;
+    rd_data_i <= 20'hFADED;
     #10;
-    rd_data_i = 20'hDEADF;
+    rd_data_i <= 20'hDEADF;
     #10;
-    rd_data_i = 20'hCAFEA;
+    rd_data_i <= 20'hCAFEA;
     #10;
-    rd_data_i = 20'hFADED;
+    rd_data_i <= 20'hFADED;
 
 
     #200;

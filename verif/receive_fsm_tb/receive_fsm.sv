@@ -8,11 +8,12 @@
 //`include "axi4_typedef.svh"
 //`include "default_param_pkg.sv"
 
+module receive_fsm
 import config_pkg::uinstr_t;
 import config_pkg::data_t;
 import config_pkg::w_data_t;
 import config_pkg::code_t;
-module receive_fsm(
+  (
     input logic clk,
     input logic arst_ni,
     input logic rd_data_valid_i,
@@ -20,7 +21,7 @@ module receive_fsm(
     output data_t operand_a_o,
     output data_t operand_b_o,
     output w_data_t operand_c_o,
-    output logic operation_valid_o
+    output logic    operation_valid_o
   );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,14 +46,19 @@ module receive_fsm(
   data_t reg_a;
   data_t reg_b;
   data_t reg_c;
+  logic en_a;
+  logic en_b;
+  logic en_c;
   //}}}
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS{{{
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+  assign operation_valid_o = rd_data_valid_i & (currentstate == oper_c_2);
+  assign operand_a_o = reg_a;
+  assign operand_b_o = reg_b;
+  assign operand_c_o = {rd_data_i,reg_c};
   //}}}
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +81,7 @@ module receive_fsm(
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIAL{{{
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  always_ff @(posedge clk)
+  always_ff @(posedge clk or negedge arst_ni) 
   begin
     if (~arst_ni)
     begin
@@ -95,58 +101,62 @@ module receive_fsm(
 
   always_comb
   begin
-    operation_valid_o =0;
-    reg_a = reg_a;
-    reg_b = reg_b;
-    reg_c = reg_c;
+    en_a=0;
+    en_b=0;
+    en_c=0;
+    nextstate = currentstate;
     case (currentstate)
       oper_a:
       begin
-        operand_a_o = reg_a;
-        operand_b_o = reg_b;
-        operand_c_o = {reg_c, rd_data_i};
-        operation_valid_o =1;
+        en_a =rd_data_valid_i;
         if (rd_data_valid_i)
-        begin
           nextstate = oper_b;
-        end
-        else
-
-          nextstate = oper_a;
       end
 
       oper_b:
       begin
-        reg_a = rd_data_i;
+        en_b= rd_data_valid_i;
         if (rd_data_valid_i)
-        begin
           nextstate = oper_c;
-        end
-        else
-          nextstate = oper_b;
       end
 
       oper_c:
       begin
-        reg_b = rd_data_i;
+        en_c= rd_data_valid_i;
         if (rd_data_valid_i)
-        begin
           nextstate = oper_c_2;
-        end
-        else
-          nextstate = oper_c;
       end
 
       oper_c_2:
       begin
-        reg_c = rd_data_i;
         if (rd_data_valid_i)
-        begin
           nextstate = oper_a;
-        end
-        else
-          nextstate = oper_c_2;
       end
     endcase
   end
+
+
+  always_ff @(posedge clk)
+  begin
+    if(en_a)
+    begin
+      reg_a <= rd_data_i;
+    end
+  end
+  always_ff @(posedge clk)
+  begin
+    if(en_b)
+    begin
+      reg_b <= rd_data_i;
+    end
+  end
+  always_ff @(posedge clk)
+  begin
+    if(en_c)
+    begin
+      reg_c <= rd_data_i;
+    end
+  end
+
+
 endmodule
