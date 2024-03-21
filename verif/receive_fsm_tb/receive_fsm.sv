@@ -2,19 +2,14 @@
 // ### Author : Md Nazmus Sakib(email)
 
 `include "config_pkg.sv"
-//`include "axi4l_assign.svh"
-//`include "axi4l_typedef.svh"
-//`include "axi4_assign.svh"
-//`include "axi4_typedef.svh"
-//`include "default_param_pkg.sv"
 
 module receive_fsm
-import config_pkg::uinstr_t;
-import config_pkg::data_t;
-import config_pkg::w_data_t;
-import config_pkg::code_t;
-  (
-    input logic clk,
+  import config_pkg::uinstr_t;
+  import config_pkg::data_t;
+  import config_pkg::w_data_t;
+  import config_pkg::code_t;
+(
+    input logic clk, // Global Clock
     input logic arst_ni,
     input logic rd_data_valid_i,
     input data_t rd_data_i,
@@ -22,7 +17,7 @@ import config_pkg::code_t;
     output data_t operand_b_o,
     output w_data_t operand_c_o,
     output logic    operation_valid_o
-  );
+);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-LOCALPARAMS GENERATED{{{
@@ -36,7 +31,12 @@ import config_pkg::code_t;
   //-TYPEDEFS{{{
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  typedef enum logic [1:0] {oper_a, oper_b, oper_c, oper_c_2} State;
+  typedef enum logic [1:0] {
+    oper_a,
+    oper_b,
+    oper_c,
+    oper_c_2
+  } State;
   State currentstate, nextstate;
   //}}}
 
@@ -46,19 +46,16 @@ import config_pkg::code_t;
   data_t reg_a;
   data_t reg_b;
   data_t reg_c;
-  logic en_a;
-  logic en_b;
-  logic en_c;
+  logic  en_a;
+  logic  en_b;
+  logic  en_c;
   //}}}
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS{{{
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  assign operation_valid_o = rd_data_valid_i & (currentstate == oper_c_2);
-  assign operand_a_o = reg_a;
-  assign operand_b_o = reg_b;
-  assign operand_c_o = {rd_data_i,reg_c};
+  assign operation_valid = rd_data_valid_i & (currentstate == oper_c_2);
   //}}}
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,14 +78,12 @@ import config_pkg::code_t;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIAL{{{
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  always_ff @(posedge clk or negedge arst_ni) 
-  begin
-    if (~arst_ni)
-    begin
+
+  // State Transition
+  always_ff @(posedge clk or negedge arst_ni) begin : sldfkjo
+    if (~arst_ni) begin
       currentstate <= oper_a;
-    end
-    else
-    begin
+    end else begin
       currentstate <= nextstate;
     end
   end
@@ -99,62 +94,43 @@ import config_pkg::code_t;
   //State Assignment
 
 
-  always_comb
-  begin
-    en_a=0;
-    en_b=0;
-    en_c=0;
+  always_comb begin
+    en_a = 0;
+    en_b = 0;
+    en_c = 0;
     nextstate = currentstate;
     case (currentstate)
-      oper_a:
-      begin
-        en_a =rd_data_valid_i;
-        if (rd_data_valid_i)
-          nextstate = oper_b;
+      oper_a: begin
+        en_a = rd_data_valid_i;
+        if (rd_data_valid_i) nextstate = oper_b;
       end
 
-      oper_b:
-      begin
-        en_b= rd_data_valid_i;
-        if (rd_data_valid_i)
-          nextstate = oper_c;
+      oper_b: begin
+        en_b = rd_data_valid_i;
+        if (rd_data_valid_i) nextstate = oper_c;
       end
 
-      oper_c:
-      begin
-        en_c= rd_data_valid_i;
-        if (rd_data_valid_i)
-          nextstate = oper_c_2;
+      oper_c: begin
+        en_c = rd_data_valid_i;
+        if (rd_data_valid_i) nextstate = oper_c_2;
       end
 
-      oper_c_2:
-      begin
-        if (rd_data_valid_i)
-          nextstate = oper_a;
+      oper_c_2: begin
+        if (rd_data_valid_i) nextstate = oper_a;
       end
     endcase
   end
 
 
-  always_ff @(posedge clk)
-  begin
-    if(en_a)
-    begin
-      reg_a <= rd_data_i;
-    end
-  end
-  always_ff @(posedge clk)
-  begin
-    if(en_b)
-    begin
-      reg_b <= rd_data_i;
-    end
-  end
-  always_ff @(posedge clk)
-  begin
-    if(en_c)
-    begin
-      reg_c <= rd_data_i;
+  always_ff @(posedge clk) begin
+    if (en_a) reg_a <= rd_data_i;
+    if (en_b) reg_b <= rd_data_i;
+    if (en_c) reg_c <= rd_data_i;
+    if (operation_valid) begin
+      operand_a_o <= reg_a;
+      operand_b_o <= reg_b;
+      operand_c_o <= {rd_data_i, reg_c};
+      operation_valid_o <= operation_valid;
     end
   end
 

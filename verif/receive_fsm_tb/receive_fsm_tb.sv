@@ -25,7 +25,7 @@ module receive_fsm_tb;
     .operation_valid_o(operation_valid_o)
   );
 
-  // Clock generation
+  // Clock generationparity
   always #5 clk <= ~clk;
 
   // Reset generation
@@ -42,33 +42,32 @@ module receive_fsm_tb;
     rd_data_i <= 20'h0;
 
     // Wait for some time for reset to complete
-    #35;
+    #40;
 
-    // Test sequence
-    // Test Case 1: Operand A
+    @(posedge clk);
     rd_data_valid_i <= 1'b1;
     rd_data_i <= 20'hABCDE;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hDEADF;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hCAFEA;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hFADED;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hCBBDE;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hFBAAE;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hDEADF;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hCAFEA;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hFADED;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hDEADF;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hCAFEA;
-    #10;
+    @(posedge clk);
     rd_data_i <= 20'hFADED;
 
 
@@ -78,3 +77,12 @@ module receive_fsm_tb;
     $finish;
   end
 endmodule
+
+/*
+always_ff @(posedge clk)
+begin
+  if(en_a) reg_a <= rd_data_i;
+  if(en_b) reg_b <= rd_data_i;
+  if(en_c) reg_c <= rd_data_i;
+end
+*/

@@ -1,51 +1,67 @@
-`include "clocking.svh"
-module address_fsm_tb;
+`include "config_pkg.sv"
+import config_pkg::uinstr_t;
+import config_pkg::addr_t;
+import config_pkg::code_t;
+module address_fsm_tb();
+`define ENABLE_DUMPFILE
+`include "tb_ess.svh"
 
-    `define ENABLE_DUMPFILE
-    `include "tb_ess.svh"
-
-    `CREATE_CLK(clk_i,  5ns,  5ns)
-
+    logic clk_i;
     logic arst_ni;
-    logic data_i_valid_i;
-    logic rec_ready_i;
-    logic [15:0] data_i;
-    logic fsm_ready_o;
-    logic data_o_valid_o;
-    logic [3:0] data_o;
+    logic uinstr_valid_i;
+    logic rd_addr_ready_i;
+    logic uinstr_ready_o;
+    logic rd_addr_valid_o;
+    uinstr_t uinstr_i;
+    addr_t rd_addr_o;
 
-    // Instantiate the address_fsm module
-    address_fsm uut (
+    // Instantiate the addr_fsm module
+    address_fsm dut (
         .clk_i(clk_i),
         .arst_ni(arst_ni),
-        .data_i_valid_i(data_i_valid_i),
-        .rec_ready_i(rec_ready_i),
-        .data_i(data_i),
-        .fsm_ready_o(fsm_ready_o),
-        .data_o_valid_o(data_o_valid_o),
-        .data_o(data_o)
+        .uinstr_i(uinstr_i),
+        .uinstr_valid_i(uinstr_valid_i),
+        .uinstr_ready_o(uinstr_ready_o),
+        .rd_addr_o(rd_addr_o),
+        .rd_addr_valid_o(rd_addr_valid_o),
+        .rd_addr_ready_i(rd_addr_ready_i)
     );
 
+    task static start_clk_i();
+        fork
+            forever begin
+                clk_i <= '1; #5ns;
+                clk_i <= '0; #5ns;
+            end
+        join_none
+    endtask
 
-    // Initial values
+    task static apply_reset();
+    arst_ni <= 1; #50ns;
+    arst_ni <= 0; #50ns;
+    arst_ni <= 1; #50ns;
+    endtask
+
+    task static gen_random_addr();
+    fork
+        forever begin
+            @(posedge clk_i);
+            if(uinstr_ready_o) begin
+                uinstr_i <= $urandom;
+                uinstr_valid_i<= 1;
+            end
+        end
+      join_none
+    endtask
+
+    
     initial begin
+        apply_reset();
         start_clk_i();
-
-        arst_ni = 0;
-        data_i_valid_i = 0;
-        rec_ready_i = 0;
-        data_i = 16'b0;
-
-        #10;
-        arst_ni = 1;
-        rec_ready_i = 1;
-        #20;
-        data_i_valid_i = 1;
-        data_i = 16'hABCD;
-        #10;
-        data_i = 16'hCAFE;
-        #10;
-        data_i = 16'hDEAD;
+        gen_random_addr();
+        rd_addr_ready_i = 1;
+        #350;
+        $finish;
     end
 
 endmodule
