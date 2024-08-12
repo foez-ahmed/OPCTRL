@@ -1,0 +1,30 @@
+name: Conditional Workflow
+
+on: [push]
+
+jobs:
+  check_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check if file exists
+        id: check_file
+        uses: andstor/file-existence-action@v2
+        with:
+          files: 'satamata'
+
+      - name: Run only if file exists
+        if: steps.check_file.outputs.files_exists == 'true'
+        run: echo "File exists, running this step!"
+
+      - name: Check if file exists
+        id: check_file
+        uses: andstor/file-existence-action@v2
+        with:
+          files: 'LICENSE'
+
+      - name: Run only if file exists
+        if: steps.check_file.outputs.files_exists == 'true'
+        run: echo "File exists, running this step!"
