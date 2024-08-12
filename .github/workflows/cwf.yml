@@ -10,7 +10,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Check if file exists
-        id: check_file
         uses: andstor/file-existence-action@v2
         with:
           files: 'satamata'
@@ -20,7 +19,6 @@ jobs:
         run: echo "File exists, running this step!"
 
       - name: Check if file exists
-        id: check_file
         uses: andstor/file-existence-action@v2
         with:
           files: 'LICENSE'
